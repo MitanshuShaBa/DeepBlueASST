@@ -8,14 +8,7 @@ import HouseholdScreen from "./Screens/HouseholdScreen";
 import ExpoStatusBar from "expo-status-bar/build/ExpoStatusBar";
 import CommunityScreen from "./Screens/CommunityScreen";
 import ActivityScreen from "./Screens/ActivityScreen";
-
-function HomeScreen() {
-  return (
-    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-      <Text>Home!</Text>
-    </View>
-  );
-}
+import HomeScreen from "./Screens/HomeScreen";
 
 function SettingsScreen() {
   return (
