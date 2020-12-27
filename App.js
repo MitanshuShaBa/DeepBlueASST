@@ -7,6 +7,7 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import HouseholdScreen from "./Screens/HouseholdScreen";
 import ExpoStatusBar from "expo-status-bar/build/ExpoStatusBar";
 import CommunityScreen from "./Screens/CommunityScreen";
+import ActivityScreen from "./Screens/ActivityScreen";
 
 function HomeScreen() {
   return (
@@ -55,7 +56,7 @@ export default function App() {
         }}
       >
         <Tab.Screen name="Home" component={HomeScreen} />
-        <Tab.Screen name="Activity" component={SettingsScreen} />
+        <Tab.Screen name="Activity" component={ActivityScreen} />
         <Tab.Screen name="Add" component={SettingsScreen} />
         <Tab.Screen name="Household" component={HouseholdScreen} />
         <Tab.Screen name="Community" component={CommunityScreen} />
