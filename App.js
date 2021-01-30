@@ -24,6 +24,7 @@ export default function App() {
   return (
     <NavigationContainer>
       <Tab.Navigator
+        backBehavior={"initialRoute"}
         screenOptions={({ route }) => ({
           tabBarIcon: ({ focused, color, size }) => {
             let iconName;
