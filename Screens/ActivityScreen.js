@@ -9,8 +9,9 @@ const ActivityScreen = () => {
   return (
     <Stack.Navigator>
       <Stack.Screen
-        name="Activity"
+        name="ActivityPage"
         component={Activity}
+        initialParams={{ purpose_selected: null }}
         options={{
           headerTitle: "Activity",
         }}

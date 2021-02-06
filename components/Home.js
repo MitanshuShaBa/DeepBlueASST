@@ -1,10 +1,34 @@
-import React from "react";
-import { Image, StyleSheet, Text, View } from "react-native";
-import ActivityCardShort from "./ActivityCardShort";
+import React, { useEffect, useState } from "react";
+import { Image, StyleSheet, Text, Touchable, View } from "react-native";
 import Card from "./Card";
 import { Ionicons, FontAwesome5 } from "@expo/vector-icons";
+import ActivityCard from "./ActivityCard";
+import firebase from "firebase";
+import "firebase/firestore";
+import {
+  TouchableHighlight,
+  TouchableNativeFeedback,
+  TouchableOpacity,
+} from "react-native-gesture-handler";
 
-const Home = () => {
+const Home = ({ navigation }) => {
+  const [activities, setActivities] = useState([]);
+  useEffect(() => {
+    firebase
+      .firestore()
+      .collection("visitation_log")
+      .limit(2)
+      .get()
+      .then((querySnapshot) => {
+        let docs = [];
+        querySnapshot.forEach(function (doc) {
+          docs.push(doc.data());
+        });
+        setActivities(docs);
+      })
+      .catch((err) => console.log(err));
+  }, []);
+
   return (
     <View style={styles.container}>
       <Card>
@@ -42,7 +66,34 @@ const Home = () => {
         </View>
       </Card>
       <Text style={styles.sectionHeader}>Recent Activity</Text>
-      <ActivityCardShort />
+      {activities.map(({ purpose, user_id }, key) => {
+        return (
+          <TouchableHighlight
+            activeOpacity={0.6}
+            underlayColor="#DDDDDD"
+            onPress={() =>
+              navigation.navigate("ActivityPage", {
+                // params: { screen: "Activity", purpose_selected: purpose },
+                purpose_selected: purpose,
+              })
+            }
+            key={key}
+          >
+            <ActivityCard
+              purpose={purpose}
+              user_id={user_id}
+              key={key}
+              compact={true}
+            />
+          </TouchableHighlight>
+        );
+      })}
+      {activities.length === 0 && <Text>Loading...</Text>}
+      {/* <ActivityCard
+        purpose={"Test purpose"}
+        user_id={"ObBo7sLBjjfempkVtTPl"}
+        compact={true}
+      /> */}
       <Card style={styles.noticeboard}>
         <Text style={styles.noticeboardTitle}>NOTICE BOARD</Text>
         <View style={styles.noticeboardContent}>
@@ -89,6 +140,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginLeft: 10,
     textAlignVertical: "center",
+    paddingRight: 10,
   },
   noticeboardTitle: {
     fontSize: 20,
