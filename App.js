@@ -1,4 +1,4 @@
-import { NavigationContainer } from "@react-navigation/native";
+import { NavigationContainer, TabActions } from "@react-navigation/native";
 import { StatusBar } from "expo-status-bar";
 import React, { useEffect } from "react";
 import { StyleSheet, Text, View, SafeAreaView } from "react-native";
@@ -12,10 +12,25 @@ import HomeScreen from "./Screens/HomeScreen";
 import { StateProvider } from "./utils/StateProvider";
 import reducer, { initialState } from "./utils/reducer";
 
+import * as firebase from "firebase";
+const firebaseConfig = {
+  apiKey: "AIzaSyBcVKrIaohfl48yRvAz1i3Ym93ZwfBTpdc",
+  authDomain: "deep-blue-asst.firebaseapp.com",
+  databaseURL: "https://deep-blue-asst.firebaseio.com",
+  projectId: "deep-blue-asst",
+  storageBucket: "deep-blue-asst.appspot.com",
+  messagingSenderId: "390678902667",
+  appId: "1:390678902667:web:2e9f6b2487e310358f218e",
+  measurementId: "G-8WHZHXGB89",
+};
+if (firebase.apps.length === 0) {
+  firebase.initializeApp(firebaseConfig);
+}
+
 function SettingsScreen() {
   return (
     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-      <Text>Settings!</Text>
+      <Text>Firebase</Text>
     </View>
   );
 }
