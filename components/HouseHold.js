@@ -1,51 +1,104 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet, Image } from "react-native";
+import { ScrollView } from "react-native-gesture-handler";
 import Card from "./Card";
 import Person from "./Person";
+import firebase from "firebase";
+import "firebase/firestore";
 
 const HouseHold = () => {
+  const user_id = "buLq0q1alEATPdJurwqE";
+  const [userInfo, setUserInfo] = useState({ name: "Loading..." });
+  useEffect(() => {
+    let retries = 5;
+
+    while (retries-- > 0) {
+      if (getUserInfo(user_id)) {
+        // console.log(retries);
+        break;
+      }
+    }
+  }, [user_id]);
+
+  const getUserInfo = (user_id) => {
+    if (user_id) {
+      firebase
+        .firestore()
+        .collection("users")
+        .doc(user_id)
+        .get()
+        .then((doc) => {
+          setUserInfo(doc.data());
+          return true;
+        })
+        .catch((err) => {
+          console.log("err", err);
+          return false;
+        });
+    } else {
+      setTimeout(() => {}, 1000);
+    }
+  };
   return (
     <View style={styles.container}>
       <Card>
         <View style={styles.account}>
           <View style={styles.photo}>
             <Image
-              style={{ height: 50, width: 50 }}
+              style={{ height: 50, width: 50, borderRadius: 50 }}
               source={{
-                uri: "https://reactnative.dev/img/tiny_logo.png",
+                uri: userInfo.photo_url,
               }}
             />
           </View>
           <View style={styles.accountInfo}>
-            <Text style={styles.residentName}>Mitanshu Reshamwala</Text>
-            <Text style={styles.residentId}>#ub20c4de</Text>
+            <Text style={styles.residentName}>{userInfo.name}</Text>
+            <Text style={styles.residentId}>#{user_id}</Text>
           </View>
         </View>
       </Card>
       <View>
         <Text style={styles.header}>My Family</Text>
-        <View style={styles.profiles}>
-          <Person />
-          <Person />
-          <Person />
-        </View>
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          style={styles.profiles}
+        >
+          {userInfo.household?.map(({ name, photo_url }, key) => {
+            return (
+              <Person
+                name={name.split(" ", 1)}
+                photo_url={photo_url}
+                key={key}
+              />
+            );
+          })}
+        </ScrollView>
       </View>
       <View>
         <Text style={styles.header}>My Daily Help</Text>
-        <View style={styles.profiles}>
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          style={styles.profiles}
+        >
           <Person />
           <Person />
           <Person />
           <Person />
-        </View>
+        </ScrollView>
       </View>
       <View>
         <Text style={styles.header}>My Vehicles</Text>
-        <View style={styles.profiles}>
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          style={styles.profiles}
+        >
           {/* TODO Change from profile to vehicles */}
           <Person />
           <Person />
-        </View>
+        </ScrollView>
       </View>
     </View>
   );
@@ -76,7 +129,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "flex-start",
   },
-
   profiles: {
     display: "flex",
     flexDirection: "row",

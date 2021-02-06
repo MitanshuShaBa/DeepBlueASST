@@ -43,7 +43,7 @@ const ActivityCard = ({
           return true;
         })
         .catch((err) => {
-          // console.log("err", err);
+          console.log("err", err);
           return false;
         });
     } else {

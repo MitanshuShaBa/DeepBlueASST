@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "Four Walls",
-    "description":"A Society Security App that helps you to secure your residence. Built for Deep Blue Competition",
+    "description": "A Society Security App that helps you to secure your residence. Built for Deep Blue Competition",
     "slug": "DeepBlueASST",
     "version": "1.0.0",
     "orientation": "portrait",
