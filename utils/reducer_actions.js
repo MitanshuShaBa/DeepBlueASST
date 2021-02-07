@@ -1,5 +1,3 @@
-const reducer_actions = {
+export default {
   SET_USER: "SET_USER",
 };
-
-export default reducer_actions;

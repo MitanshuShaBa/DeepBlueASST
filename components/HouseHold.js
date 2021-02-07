@@ -5,30 +5,37 @@ import Card from "./Card";
 import Person from "./Person";
 import firebase from "firebase";
 import "firebase/firestore";
+import { useStateValue } from "../utils/StateProvider";
 
 const HouseHold = () => {
-  const user_id = "buLq0q1alEATPdJurwqE";
+  const [{ user }, dispatch] = useStateValue();
   const [userInfo, setUserInfo] = useState({ name: "Loading..." });
   useEffect(() => {
     let retries = 5;
 
     while (retries-- > 0) {
-      if (getUserInfo(user_id)) {
+      if (getUserInfo(user.email)) {
         // console.log(retries);
         break;
       }
     }
-  }, [user_id]);
+  }, []);
 
-  const getUserInfo = (user_id) => {
-    if (user_id) {
+  const getUserInfo = (user_email) => {
+    if (user_email) {
       firebase
         .firestore()
         .collection("users")
-        .doc(user_id)
+        .where("email", "==", user_email)
+        .limit(1)
         .get()
-        .then((doc) => {
-          setUserInfo(doc.data());
+        .then((querySnapshot) => {
+          let docs = [];
+          querySnapshot.forEach(function (doc) {
+            docs.push(doc.data());
+          });
+          // console.log(docs);
+          setUserInfo(docs[0]);
           return true;
         })
         .catch((err) => {
@@ -53,7 +60,6 @@ const HouseHold = () => {
           </View>
           <View style={styles.accountInfo}>
             <Text style={styles.residentName}>{userInfo.name}</Text>
-            <Text style={styles.residentId}>#{user_id}</Text>
           </View>
         </View>
       </Card>
